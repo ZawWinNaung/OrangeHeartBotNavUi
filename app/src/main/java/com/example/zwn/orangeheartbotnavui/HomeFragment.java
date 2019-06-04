@@ -25,7 +25,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 
 /**
@@ -77,8 +76,9 @@ public class HomeFragment extends Fragment {
 
         myAdapter = new MyAdapter(getActivity());
         recyclerView = view.findViewById(R.id.rvPosts);
-        recyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getActivity()), DividerItemDecoration.VERTICAL));
+//        recyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getActivity()), DividerItemDecoration.VERTICAL));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(myAdapter);
 

@@ -43,8 +43,7 @@ public class DownloadLaterFragment extends Fragment {
 
         myAdapter = new DownloadLaterAdapter(downloadLaterPostsLists,getActivity(), db);
         recyclerView = view.findViewById(R.id.rvDownloadLater);
-        recyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getActivity()),
-                DividerItemDecoration.VERTICAL));
+//        recyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getActivity()),DividerItemDecoration.VERTICAL));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(myAdapter);
 
