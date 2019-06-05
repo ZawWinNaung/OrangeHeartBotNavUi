@@ -67,9 +67,4 @@ public class MainActivity extends AppCompatActivity {
         fm.beginTransaction().add(R.id.main_container, fragment2, "2").hide(fragment2).commit();
         fm.beginTransaction().add(R.id.main_container, fragment1, "1").commit();
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
 }
