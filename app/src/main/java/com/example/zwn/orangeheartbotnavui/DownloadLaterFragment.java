@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -43,10 +44,10 @@ public class DownloadLaterFragment extends Fragment {
 
         myAdapter = new DownloadLaterAdapter(downloadLaterPostsLists,getActivity(), db);
         recyclerView = view.findViewById(R.id.rvDownloadLater);
-//        recyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getActivity()),DividerItemDecoration.VERTICAL));
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        RecyclerView.LayoutManager manager = new GridLayoutManager(getActivity(), 1);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(myAdapter);
-
         return view;
     }
 

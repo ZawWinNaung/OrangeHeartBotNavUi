@@ -6,12 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.androidstudy.networkmanager.Monitor;
@@ -76,22 +77,23 @@ public class HomeFragment extends Fragment {
 
         myAdapter = new MyAdapter(getActivity());
         recyclerView = view.findViewById(R.id.rvPosts);
-//        recyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getActivity()), DividerItemDecoration.VERTICAL));
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager manager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(myAdapter);
-
         return view;
     }
 
     private void showNetworkStateSnackBar(String state, int length, String bgColor, boolean isConnected) {
-        if (!isConnected){
+        if (!isConnected) {
             snackbar = Snackbar.make(recyclerView, state, length);
             View snackBarView = snackbar.getView();
             TextView tv = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
             tv.setTextColor(Color.WHITE);
             snackBarView.setBackgroundColor(Color.parseColor(bgColor));
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) snackBarView.getLayoutParams();
+            params.gravity = Gravity.TOP;
+            snackBarView.setLayoutParams(params);
             snackbar.show();
         } else {
             if (snackbar != null) {
