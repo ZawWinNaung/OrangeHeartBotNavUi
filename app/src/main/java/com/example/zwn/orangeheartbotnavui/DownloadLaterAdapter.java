@@ -71,18 +71,13 @@ public class DownloadLaterAdapter extends RecyclerView.Adapter<DownloadLaterAdap
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.menuReport:
-                                Toast.makeText(context, "Reported to server", Toast.LENGTH_SHORT).show();
-                                return true;
-                            case R.id.menuRemove:
-                                Toast.makeText(context, "Track removed from download later", Toast.LENGTH_SHORT).show();
-                                new DeleteTask(db).execute(posts);
-                                postsList.remove(i);
-                                return true;
-                            default:
-                                return false;
+                        if (item.getItemId() == R.id.menuRemove) {
+                            Toast.makeText(context, "Track removed from download later", Toast.LENGTH_SHORT).show();
+                            new DeleteTask(db).execute(posts);
+                            postsList.remove(i);
+                            return true;
                         }
+                        return false;
                     }
                 });
             }
