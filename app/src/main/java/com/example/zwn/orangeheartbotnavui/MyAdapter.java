@@ -18,6 +18,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -32,18 +34,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> implements Filterable {
     private List<Posts> postsList = new ArrayList<>();
     private List<Posts> postsListFull;
     private Context context;
     private DownloadLaterPosts downloadLaterPosts;
 
-    MyAdapter(Context context , List<Posts> postsList) {
+    MyAdapter(Context context) {
         this.context = context;
-        postsListFull = new ArrayList<>(postsList);
     }
 
     @NonNull
@@ -55,6 +57,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     void setData(List<Posts> postsList) {
         this.postsList = postsList;
+        postsListFull = new ArrayList<>(postsList);
         notifyDataSetChanged();
     }
 
@@ -152,4 +155,36 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             menuMore = itemView.findViewById(R.id.menuMore);
         }
     }
+
+    @Override
+    public Filter getFilter() {
+        return postFilter;
+    }
+
+    private Filter postFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Posts> filteredPosts = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0) {
+                filteredPosts.addAll(postsListFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (Posts posts : postsListFull) {
+                    if (posts.getTitle().toLowerCase().contains(filterPattern) || posts.getArtist().toLowerCase().contains(filterPattern)) {
+                        filteredPosts.add(posts);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredPosts;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            postsList.clear();
+            postsList.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 }
