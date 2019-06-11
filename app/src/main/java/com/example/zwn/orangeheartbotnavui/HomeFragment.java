@@ -4,6 +4,7 @@ package com.example.zwn.orangeheartbotnavui;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -91,8 +92,8 @@ public class HomeFragment extends Fragment {
             TextView tv = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
             tv.setTextColor(Color.WHITE);
             snackBarView.setBackgroundColor(Color.parseColor(bgColor));
-            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) snackBarView.getLayoutParams();
-            params.gravity = Gravity.TOP;
+            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) snackBarView.getLayoutParams();
+            params.gravity = Gravity.BOTTOM;
             snackBarView.setLayoutParams(params);
             snackbar.show();
         } else {
