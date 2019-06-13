@@ -2,10 +2,12 @@ package com.example.zwn.orangeheartbotnavui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.CircularProgressDrawable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,24 +15,20 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> implements Filterable {
     private List<Posts> postsList = new ArrayList<>();
+    private List<Posts> postsListFull;
     private Context context;
     private DownloadLaterPosts downloadLaterPosts;
 
@@ -47,6 +45,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     void setData(List<Posts> postsList) {
         this.postsList = postsList;
+        postsListFull = new ArrayList<>(postsList);
         notifyDataSetChanged();
     }
 
@@ -61,7 +60,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         viewHolder.txtArtist.setText(posts.getArtist());
         viewHolder.txtTitle.setText(posts.getTitle());
-        Glide.with(viewHolder.imgCoverArt).load(posts.getImageUrl()).into(viewHolder.imgCoverArt);
+
+        int tabIconColor = ContextCompat.getColor(context, R.color.colorPrimary);
+        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(context);
+        circularProgressDrawable.setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+        circularProgressDrawable.setStrokeWidth(8);
+        circularProgressDrawable.setCenterRadius(30);
+        circularProgressDrawable.start();
+        Glide.with(viewHolder.imgCoverArt).load(posts.getImageUrl()).placeholder(circularProgressDrawable).into(viewHolder.imgCoverArt);
+
         final Uri uri = Uri.parse(posts.getLink());
         viewHolder.txtDownload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,4 +143,36 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             menuMore = itemView.findViewById(R.id.menuMore);
         }
     }
+
+    @Override
+    public Filter getFilter() {
+        return postFilter;
+    }
+
+    private Filter postFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Posts> filteredPosts = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0) {
+                filteredPosts.addAll(postsListFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (Posts posts : postsListFull) {
+                    if (posts.getTitle().toLowerCase().contains(filterPattern) || posts.getArtist().toLowerCase().contains(filterPattern)) {
+                        filteredPosts.add(posts);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredPosts;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            postsList.clear();
+            postsList.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 }
