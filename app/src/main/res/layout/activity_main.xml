@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
@@ -24,9 +25,9 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabMode="fixed"
+            android:background="@color/item_bg_color"
             app:tabIconTint="@color/dark_grey"
-            android:background="@color/item_bg_color"/>
+            app:tabMode="fixed" />
 
     </android.support.design.widget.AppBarLayout>
 
