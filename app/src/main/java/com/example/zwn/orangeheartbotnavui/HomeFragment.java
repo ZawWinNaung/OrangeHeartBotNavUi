@@ -3,6 +3,7 @@ package com.example.zwn.orangeheartbotnavui;
 
 import android.app.Notification;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -104,6 +105,7 @@ public class HomeFragment extends Fragment {
         RecyclerView.LayoutManager manager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(manager);
+        recyclerView.addItemDecoration(new MarginItemDecoration(getResources().getInteger(R.integer.item_spacing)));
         recyclerView.setAdapter(myAdapter);
         return view;
     }

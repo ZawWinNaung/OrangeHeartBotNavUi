@@ -52,12 +52,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
     @Override
     public void onBindViewHolder(@NonNull final MyAdapter.MyViewHolder viewHolder, final int i) {
         final Posts posts = postsList.get(i);
-        if (postsList.size()-1 == i) {
-            GridLayoutManager.LayoutParams layoutParams = (GridLayoutManager.LayoutParams) viewHolder.contentView.getLayoutParams();
-            layoutParams.setMargins(0, 16, 0, 16);
-            viewHolder.contentView.setLayoutParams(layoutParams);
-        }
-
         viewHolder.txtArtist.setText(posts.getArtist());
         viewHolder.txtTitle.setText(posts.getTitle());
 

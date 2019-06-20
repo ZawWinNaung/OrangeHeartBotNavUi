@@ -43,12 +43,6 @@ public class DownloadLaterAdapter extends RecyclerView.Adapter<DownloadLaterAdap
     @Override
     public void onBindViewHolder(@NonNull DownloadLaterAdapter.MyViewHolder myViewHolder, final int i) {
         final DownloadLaterPosts posts = postsList.get(i);
-        if (i == postsList.size() - 1) {
-            GridLayoutManager.LayoutParams layoutParams = (GridLayoutManager.LayoutParams) myViewHolder.contentView.getLayoutParams();
-            layoutParams.setMargins(0, 16, 0, 16);
-            myViewHolder.contentView.setLayoutParams(layoutParams);
-        }
-
         myViewHolder.txtArtist.setText(posts.getArtist());
         myViewHolder.txtTitle.setText(posts.getTitle());
         Glide.with(myViewHolder.imgCoverArt).load(posts.getImageUrl()).into(myViewHolder.imgCoverArt);
