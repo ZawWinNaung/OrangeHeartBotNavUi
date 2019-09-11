@@ -1,9 +1,6 @@
 package com.example.zwn.orangeheartbotnavui;
 
 
-import android.app.Notification;
-import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,8 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -60,8 +56,6 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final String CHANNEL_ID = "personal_notification";
-        final int NOTIFICATION_ID = 001;
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         final List<Posts> postsList = new ArrayList<>();
@@ -72,6 +66,8 @@ public class HomeFragment extends Fragment {
                 showNetworkStateSnackBar(getString(R.string.no_internet_connection), Snackbar.LENGTH_INDEFINITE, getString(R.string.color_red), isConnected);
             }
         });
+
+        final ContentLoadingProgressBar progressBar = view.findViewById(R.id.progress_bar);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference postReference = database.getReference(MainActivity.POSTS);
@@ -86,13 +82,7 @@ public class HomeFragment extends Fragment {
                     Collections.reverse(postsList);
                 }
                 myAdapter.setData(postsList);
-//                NotificationCompat.Builder builder = new NotificationCompat.Builder(getActivity(), CHANNEL_ID)
-//                        .setSmallIcon(R.drawable.ic_notifications)
-//                        .setContentTitle("New Hardstyle Track!")
-//                        .setContentText(postsList.get(0).getTitle())
-//                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-//                NotificationManagerCompat managerCompat = NotificationManagerCompat.from(getActivity());
-//                managerCompat.notify(NOTIFICATION_ID, builder.build());
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
